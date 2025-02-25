@@ -8,7 +8,7 @@ module "vpc" {
 
   cidr = var.vpc_cidr
 
-  enable_dns_support = true
+  enable_dns_support   = true
   enable_dns_hostnames = true
 
   azs             = local.azs
@@ -22,7 +22,7 @@ module "vpc" {
 resource "aws_vpc_endpoint" "ssm" {
   vpc_id = module.vpc.vpc_id
 
-  service_name = "com.amazonaws.${var.region}.ssm"
+  service_name      = "com.amazonaws.${var.region}.ssm"
   vpc_endpoint_type = "Interface"
 
   private_dns_enabled = true
@@ -34,7 +34,7 @@ resource "aws_vpc_endpoint" "ssm" {
 resource "aws_vpc_endpoint" "ec2_messages" {
   vpc_id = module.vpc.vpc_id
 
-  service_name = "com.amazonaws.${var.region}.ec2messages"
+  service_name      = "com.amazonaws.${var.region}.ec2messages"
   vpc_endpoint_type = "Interface"
 
   private_dns_enabled = true
@@ -46,7 +46,7 @@ resource "aws_vpc_endpoint" "ec2_messages" {
 resource "aws_vpc_endpoint" "ssmmessages" {
   vpc_id = module.vpc.vpc_id
 
-  service_name = "com.amazonaws.${var.region}.ssmmessages"
+  service_name      = "com.amazonaws.${var.region}.ssmmessages"
   vpc_endpoint_type = "Interface"
 
   private_dns_enabled = true
@@ -69,6 +69,10 @@ resource "aws_security_group" "ssm_sg" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "ssm-security-group"
   }
 }
 
@@ -98,5 +102,9 @@ resource "aws_security_group" "apigw_sg" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "apigw-security-group"
   }
 }
